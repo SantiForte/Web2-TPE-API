@@ -1,165 +1,73 @@
 <?php
 
 require_once __DIR__ . '/../models/FutbolistasModel.php';
-require_once __DIR__ . '/../models/ClubModel.php';
 
-class FutbolistasController {
+class FutbolistasApiController {
 
     private $model;
-    private $clubModel;
 
     public function __construct() {
-
         $this->model = new FutbolistasModel();
-        $this->clubModel = new ClubModel();
     }
 
-    // LISTADO
-    public function showAll() {
+    /*GET listado*/
+    public function getFutbolistas($req, $res) {
 
-        $futbolistas = $this->model->getAllWithClub();
+        $sort = $req->query->sort ?? 'id_jugador';
+        $order = $req->query->order ?? 'ASC';
 
-        require __DIR__ . '/../views/futbolistas.phtml';
+        $futbolistas = $this->model->getAll($sort, $order);
+
+        return $res->json($futbolistas, 200);
     }
 
-    // DETALLE
-    public function show($id) {
+    /*PUT*/
+    public function updateFutbolista($req, $res) {
 
-        if (!is_numeric($id)) {
-            exit("ID inválido");
-        }
-
-        $f = $this->model->getById($id);
-
-        if (!$f) {
-            exit("Futbolista no encontrado");
-        }
-
-        require __DIR__ . '/../views/futbolista_detalle.phtml';
-    }
-
-    // FORMULARIO ALTA
-    public function addForm() {
-
-        $this->checkAdmin();
-
-        $clubes = $this->clubModel->getAll();
-
-        require __DIR__ . '/../views/futbolista_form.phtml';
-    }
-
-    // INSERT
-    public function add() {
-
-        $this->checkAdmin();
-
-        $nombre = trim($_POST['nombre'] ?? '');
-        $apellido = trim($_POST['apellido'] ?? '');
-        $posicion = trim($_POST['posicion'] ?? '');
-        $id_club = (int) ($_POST['id_club'] ?? 0);
-
-        if (
-            empty($nombre) ||
-            empty($apellido) ||
-            empty($posicion) ||
-            $id_club <= 0
-        ) {
-            exit("Datos inválidos");
-        }
-
-        $this->model->insert(
-            $nombre,
-            $apellido,
-            $posicion,
-            $id_club
-        );
-
-        header('Location: ' . BASE_URL . 'futbolistas');
-        exit();
-    }
-
-    // FORMULARIO EDIT
-    public function editForm($id) {
-
-        $this->checkAdmin();
-
-        if (!is_numeric($id)) {
-            exit("ID inválido");
-        }
+        $id = $req->params->id;
 
         $futbolista = $this->model->getById($id);
 
         if (!$futbolista) {
-            exit("Futbolista no encontrado");
+            return $res->json(
+                "El futbolista con id=$id no existe",
+                404
+            );
         }
 
-        $clubes = $this->clubModel->getAll();
-
-        require __DIR__ . '/../views/futbolista_form.phtml';
-    }
-
-    // UPDATE
-    public function update($id) {
-
-        $this->checkAdmin();
-
-        if (!is_numeric($id)) {
-            exit("ID inválido");
-        }
-
-        $nombre = trim($_POST['nombre'] ?? '');
-        $apellido = trim($_POST['apellido'] ?? '');
-        $posicion = trim($_POST['posicion'] ?? '');
-        $id_club = (int) ($_POST['id_club'] ?? 0);
+        $nombre = $req->body->nombre ?? null;
+        $apellido = $req->body->apellido ?? null;
+        $fecha_nacimiento = $req->body->fecha_nacimiento ?? null;
+        $nacionalidad = $req->body->nacionalidad ?? null;
+        $posicion = $req->body->posicion ?? null;
+        $id_club = $req->body->id_club ?? null;
 
         if (
             empty($nombre) ||
             empty($apellido) ||
-            empty($posicion) ||
-            $id_club <= 0
+            empty($posicion)
         ) {
-            exit("Datos inválidos");
+            return $res->json(
+                "Faltan completar datos obligatorios",
+                400
+            );
         }
 
         $this->model->update(
             $id,
             $nombre,
             $apellido,
+            $fecha_nacimiento,
+            $nacionalidad,
             $posicion,
             $id_club
         );
 
-        header('Location: ' . BASE_URL . 'futbolistas');
-        exit();
-    }
+        $futbolistaActualizado = $this->model->getById($id);
 
-    // DELETE
-    public function delete($id) {
-
-        $this->checkAdmin();
-
-        if (!is_numeric($id)) {
-            exit("ID inválido");
-        }
-
-        $this->model->delete($id);
-
-        header('Location: ' . BASE_URL . 'futbolistas');
-        exit();
-    }
-
-    // SEGURIDAD
-    private function checkAdmin() {
-
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
-
-        if (
-            !isset($_SESSION['ROLE']) ||
-            $_SESSION['ROLE'] !== 'admin'
-        ) {
-            exit("Acceso denegado");
-        }
+        return $res->json(
+            $futbolistaActualizado,
+            200
+        );
     }
 }
