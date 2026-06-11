@@ -29,6 +29,8 @@ $router->addRoute(
     'FutbolistasApiController',
     'updateFutbolista'
 );
+//obtener jugador por id
+$router->addRoute('futbolistas/:id','GET','FutbolistasApiController','getById');
 
 // Ejecuta el router
 $router->route(
