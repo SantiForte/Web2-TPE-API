@@ -5,7 +5,12 @@ class FutbolistasModel {
     private $db;
 
     public function __construct() {
-        $this->db = new PDO('mysql:host=localhost;dbname=futbol_db;charset=utf8','root','',[PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
+        $this->db = new PDO(
+            'mysql:host=localhost;dbname=futbol_db;charset=utf8',
+            'root',
+            '',
+            [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
+        );
     }
 
     // LISTADO + ORDENAMIENTO
@@ -42,6 +47,7 @@ class FutbolistasModel {
         return $query->fetchAll(PDO::FETCH_OBJ);
     }
 
+    // GET POR ID
     public function getById($id) {
 
         $query = $this->db->prepare("
@@ -55,7 +61,7 @@ class FutbolistasModel {
         return $query->fetch(PDO::FETCH_OBJ);
     }
 
-    // UPDATE (PUT)
+    // UPDATE
     public function update(
         $id,
         $nombre,
@@ -86,5 +92,43 @@ class FutbolistasModel {
             $id_club,
             $id
         ]);
+    }
+
+    // PAGINADO
+    public function getAllPaginated($sort, $order, $limit, $offset) {
+
+        $camposPermitidos = [
+            'id_jugador',
+            'nombre',
+            'apellido',
+            'fecha_nacimiento',
+            'nacionalidad',
+            'posicion',
+            'id_club'
+        ];
+
+        if (!in_array($sort, $camposPermitidos)) {
+            $sort = 'id_jugador';
+        }
+
+        $order = strtoupper($order);
+
+        if ($order != 'ASC' && $order != 'DESC') {
+            $order = 'ASC';
+        }
+
+        $query = $this->db->prepare("
+            SELECT *
+            FROM futbolista
+            ORDER BY $sort $order
+            LIMIT ? OFFSET ?
+        ");
+
+        $query->bindValue(1, (int) $limit, PDO::PARAM_INT);
+        $query->bindValue(2, (int) $offset, PDO::PARAM_INT);
+
+        $query->execute();
+
+        return $query->fetchAll(PDO::FETCH_OBJ);
     }
 }
