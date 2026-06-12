@@ -1,20 +1,28 @@
 <?php
 
 require_once 'libs/router/router.php';
+
+require_once 'libs/jwt/JWTMiddleware.php';
+
 require_once 'app/controllers/FutbolistasApiController.php';
+require_once 'app/controllers/AuthApiController.php';
 
 $router = new Router();
 
-/*
-|--------------------------------------------------------------------------
-| MIEMBRO A
-|--------------------------------------------------------------------------
-| - GET listado de futbolistas
-| - PUT actualización de futbolistas
-| - Ordenamiento (se implementa dentro del GET mediante query params)
-*/
+/* Middleware JWT */
+$router->addMiddleware(
+    new JWTMiddleware()
+);
 
-// Listado
+/* LOGIN */
+$router->addRoute(
+    'auth/token',
+    'POST',
+    'AuthApiController',
+    'getToken'
+);
+
+/* GET listado */
 $router->addRoute(
     'futbolistas',
     'GET',
@@ -22,17 +30,22 @@ $router->addRoute(
     'getFutbolistas'
 );
 
-// Actualización
+/* GET por ID */
+$router->addRoute(
+    'futbolistas/:id',
+    'GET',
+    'FutbolistasApiController',
+    'getFutbolistaById'
+);
+
+/* PUT ACTUALIZACION */
 $router->addRoute(
     'futbolistas/:id',
     'PUT',
     'FutbolistasApiController',
     'updateFutbolista'
 );
-//obtener jugador por id
-$router->addRoute('futbolistas/:id','GET','FutbolistasApiController','getById');
 
-// Ejecuta el router
 $router->route(
     $_GET['resource'],
     $_SERVER['REQUEST_METHOD']
