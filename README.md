@@ -3,7 +3,7 @@ TPE de Web2 parte 3 (Tadeo y Santiago)
 
 Base URL: http://localhost/Web2-TPE-API/api/
 
-Autenticación(Obtener Token)
+##Autenticación(Obtener Token)
 
 Endpoint
 POST /auth/token
@@ -17,7 +17,7 @@ Respuesta
   "token": "eyJhbGciOi..."
 }
 ----------------------------------------------
-Futbolistas(Obtener listado de futbolistas)
+##Futbolistas(Obtener listado de futbolistas)
 Endpoint
 GET /futbolistas
 
@@ -37,7 +37,7 @@ Respuesta
   ...
 ]
 --------------------------------------------------
-Ordenamiento
+##Ordenamiento
 Endpoint
 GET /futbolistas?sort=nombre&order=ASC
 
@@ -61,7 +61,7 @@ Respuesta:
   ...
 ]
 -------------------------------------------------
-Paginación
+##Paginación
 Endpoint
 GET /futbolistas?page=1&limit=2
 
@@ -85,7 +85,7 @@ Respuesta:
   ...
 ]
 --------------------------------------------------
-Obtener futbolista por ID
+##Obtener futbolista por ID
 Endpoint
 GET /futbolistas/{id}
 
@@ -104,7 +104,7 @@ Respuesta:
   }
 ]
 ------------------------------------------------
-Actualizar futbolista
+##Actualizar futbolista
 Endpoint
 PUT /futbolistas/{id}
 Requiere autenticación JWT
