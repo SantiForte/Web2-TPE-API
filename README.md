@@ -3,7 +3,7 @@ TPE de Web2 parte 3 (Tadeo y Santiago)
 
 Base URL: http://localhost/Web2-TPE-API/api/
 
-##Autenticación(Obtener Token)
+## Autenticación(Obtener Token)
 
 Endpoint
 POST /auth/token
