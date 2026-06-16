@@ -110,7 +110,8 @@ PUT /futbolistas/{id}
 Requiere autenticación JWT
 
 Header:
-Authorization: Bearer TOKEN
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZF91c3VhcmlvIjoyLCJ1c3VhcmlvIjoid2ViYWRtaW4iLCJyb2wiOiJhZG1pbiIsImV4cCI6MTc4MTYyNzc2Nn0.ewygcYZMmfKNzwgj6Ts_etQNRu6Q0jOfl5wQIvQjroo
+Content-Type applicatio/json
 Body
 {
   "nombre": "Luis",
