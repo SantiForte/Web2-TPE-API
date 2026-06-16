@@ -1,10 +1,6 @@
 # Web2-TPE-API
 TPE de Web2 parte 3 (Tadeo y Santiago)
 
-no pude verificar bien el jwt no tengo la contraseña del usuario, andaba todo no tenia errores pero cuando le puse el jwt no pude probar si estaba bien
-falta hacer el readme pero despues creo que esta casi todo
-
-
 Base URL: http://localhost/Web2-TPE-API/api/
 
 Autenticación(Obtener Token)
@@ -33,9 +29,9 @@ Respuesta
     "id_jugador": 1,
     "nombre": "lautaro",
     "apellido": "martinez"
-    "fecha_nacimiento": "1997-08-22",
-    "nacionalidad": "Argentina",
-    "posicion": "Delantero",
+    "fecha_nacimiento": "1998-05-08",
+    "nacionalidad": "argentina",
+    "posicion": "delantero",
     "id_club": 1
   },
   ...
@@ -57,6 +53,10 @@ Respuesta:
     "id_jugador": 1,
     "nombre": "lautaro",
     "apellido": "martinez"
+    "fecha_nacimiento": "1998-05-08",
+    "nacionalidad": "argentina",
+    "posicion": "delantero",
+    "id_club": 1
   },
   ...
 ]
@@ -64,30 +64,52 @@ Respuesta:
 Paginación
 Endpoint
 GET /futbolistas?page=1&limit=2
+
 Parámetros
-Parámetro	Descripción
-page	Número de página
-limit	Cantidad de registros por página
+page	= Número de página
+limit	= Cantidad de registros por página
+
 Ejemplo
 GET /futbolistas?page=2&limit=2
+Respuesta:
+[
+  {
+    "id_jugador": 1,
+    "nombre": "lautaro",
+    "apellido": "martinez"
+    "fecha_nacimiento": "1998-05-08",
+    "nacionalidad": "argentina",
+    "posicion": "delantero",
+    "id_club": 1
+  },
+  ...
+]
+--------------------------------------------------
 Obtener futbolista por ID
 Endpoint
 GET /futbolistas/{id}
+
 Ejemplo
 GET /futbolistas/1
-Respuestas
-
-200 OK
-
-404 Not Found
-
+Respuesta:
+[
+  {
+    "id_jugador": 1,
+    "nombre": "lautaro",
+    "apellido": "martinez"
+    "fecha_nacimiento": "1998-05-08",
+    "nacionalidad": "argentina",
+    "posicion": "delantero",
+    "id_club": 1
+  }
+]
+------------------------------------------------
 Actualizar futbolista
 Endpoint
 PUT /futbolistas/{id}
 Requiere autenticación JWT
 
 Header:
-
 Authorization: Bearer TOKEN
 Body
 {
