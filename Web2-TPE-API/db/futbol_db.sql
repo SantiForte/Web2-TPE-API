@@ -34,7 +34,7 @@ INSERT INTO `futbolista` (`id_jugador`, `nombre`, `apellido`, `fecha_nacimiento`
 (1, 'lautaro', 'martinez', '1998-05-08', 'argentina', 'delantero', 1),
 (2, 'luis', 'henrique', '1998-07-08', 'brasil', 'extremo', 1),
 (3, 'lionel', 'messi', '1998-07-04', 'argentina', 'extremo', 2),
-(4, 'barella', '', NULL, NULL, 'mediocampista', 1);
+(4, 'nicolo', 'barella', '1997-07-02', 'italia', 'mediocampista', 1);
 
 CREATE TABLE `usuario` (
   `id_usuario` int(11) NOT NULL,
