@@ -33,6 +33,10 @@ Respuesta
     "id_jugador": 1,
     "nombre": "lautaro",
     "apellido": "martinez"
+    "fecha_nacimiento": "1997-08-22",
+    "nacionalidad": "Argentina",
+    "posicion": "Delantero",
+    "id_club": 1
   },
   ...
 ]
@@ -48,7 +52,15 @@ order	= ASC o DESC
 Ejemplo
 GET /futbolistas?sort=apellido&order=DESC
 Respuesta:
-
+[
+  {
+    "id_jugador": 1,
+    "nombre": "lautaro",
+    "apellido": "martinez"
+  },
+  ...
+]
+-------------------------------------------------
 Paginación
 Endpoint
 GET /futbolistas?page=1&limit=2
