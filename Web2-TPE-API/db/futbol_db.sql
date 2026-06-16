@@ -44,7 +44,7 @@ CREATE TABLE `usuario` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 INSERT INTO `usuario` (`id_usuario`, `usuario`, `password`, `rol`) VALUES
-(1, 'webadmin', '$2y$10$3cUYeuuDpN/D5/s/kZBUO.l/wOTd0RqNoAOA28.zuveRrcET15BTeint', 'admin');
+(1, 'webadmin', '$2y$10$/seXIPVC.hyxnMAIdY2/M.F.I3dtl04KQs/0N1AyWTTEs/Kt2kysi', 'admin');
 
 
 ALTER TABLE `club`
