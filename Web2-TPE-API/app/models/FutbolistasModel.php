@@ -131,4 +131,20 @@ class FutbolistasModel {
 
         return $query->fetchAll(PDO::FETCH_OBJ);
     }
+    public function insert($nombre, $apellido, $posicion, $id_club) {
+
+        $query = $this->db->prepare("
+            INSERT INTO futbolista
+            (nombre, apellido, posicion, id_club)
+            VALUES (?, ?, ?, ?)
+        ");
+
+        $query->execute([
+            $nombre,
+            $apellido,
+            $posicion,
+            $id_club
+        ]);
+        return $this->db->lastInsertId();
+    }
 }

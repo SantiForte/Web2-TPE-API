@@ -45,6 +45,8 @@ $router->addRoute(
     'FutbolistasApiController',
     'updateFutbolista'
 );
+//POST
+$router->addRoute('futbolistas','POST','FutbolistasApiController','addFutbolista');
 
 $router->route(
     $_GET['resource'],

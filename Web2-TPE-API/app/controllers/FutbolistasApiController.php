@@ -1,13 +1,16 @@
 <?php
 
 require_once __DIR__ . '/../models/FutbolistasModel.php';
+require_once __DIR__ . '/../models/ClubModel.php';
 
 class FutbolistasApiController {
 
     private $model;
+    private $modelClub;
 
     public function __construct() {
         $this->model = new FutbolistasModel();
+        $this->modelClub= new ClubModel();
     }
 
     /*GET listado + paginado*/
@@ -42,6 +45,27 @@ class FutbolistasApiController {
             return $res->json($futbolista,200);
         }
     }   
+    //POST
+    function addFutbolista($req,$res){
+        $nombre=$req->body->nombre ?? null;
+        $apellido=$req->body->apellido ?? null;
+        $posicion=$req->body->posicion ?? null;
+        $id_club=$req->body->id_club ?? null;
+
+        if(empty($nombre)||empty($apellido)||empty($posicion)||empty($id_club)){
+            return $res->json('Error al enviar datos del futbolistas', 400);
+        }
+        $club=$this->modelClub->get($id_club);
+        if(!$club){
+            return $res->json('Error el club no existe', 404);
+        }
+        $id=$this->model->insert($nombre,$apellido,$posicion,$id_club);
+        if(!$id){
+            return $res->json('Error al insertar', 500);
+        }
+        $futbolista = $this->model->getById($id);
+        return $res->json($futbolista,201);
+    }
 
     /*PUT*/
 public function updateFutbolista($req, $res) {
