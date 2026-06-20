@@ -13,10 +13,11 @@ class FutbolistasApiController {
         $this->modelClub= new ClubModel();
     }
 
-    /*GET listado + paginado*/
+    /*GET listado + paginado + filtrado*/
     public function getFutbolistas($req, $res) {
         $sort = $req->query->sort ?? 'id_jugador';
         $order = $req->query->order ?? 'ASC';
+        $posicion = $req->query->posicion ?? null; // Atrapamos el filtro
 
         $page = $req->query->page ?? null;
         $limit = $req->query->limit ?? null;
@@ -27,9 +28,9 @@ class FutbolistasApiController {
             }
 
             $offset = ($page - 1) * $limit;
-            $futbolistas = $this->model->getAllPaginated($sort, $order, $limit, $offset);
+            $futbolistas = $this->model->getAllPaginated($sort, $order, $limit, $offset, $posicion);
         } else {
-            $futbolistas = $this->model->getAll($sort, $order);
+            $futbolistas = $this->model->getAll($sort, $order, $posicion);
         }
 
         return $res->json($futbolistas, 200);

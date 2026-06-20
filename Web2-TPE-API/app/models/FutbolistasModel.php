@@ -13,8 +13,8 @@ class FutbolistasModel {
         );
     }
 
-    // LISTADO + ORDENAMIENTO
-    public function getAll($sort = 'id_jugador', $order = 'ASC') {
+    // LISTADO + ORDENAMIENTO + FILTRO
+    public function getAll($sort = 'id_jugador', $order = 'ASC', $posicion = null) {
 
         $camposPermitidos = [
             'id_jugador',
@@ -36,13 +36,18 @@ class FutbolistasModel {
             $order = 'ASC';
         }
 
-        $query = $this->db->prepare("
-            SELECT *
-            FROM futbolista
-            ORDER BY $sort $order
-        ");
+        $sql = "SELECT * FROM futbolista";
+        $params = [];
 
-        $query->execute();
+        if ($posicion) {
+            $sql .= " WHERE posicion = ?";
+            $params[] = $posicion;
+        }
+
+        $sql .= " ORDER BY $sort $order";
+
+        $query = $this->db->prepare($sql);
+        $query->execute($params);
 
         return $query->fetchAll(PDO::FETCH_OBJ);
     }
@@ -94,8 +99,8 @@ class FutbolistasModel {
         ]);
     }
 
-    // PAGINADO
-    public function getAllPaginated($sort, $order, $limit, $offset) {
+    // PAGINADO + FILTRO
+    public function getAllPaginated($sort, $order, $limit, $offset, $posicion = null) {
 
         $camposPermitidos = [
             'id_jugador',
@@ -117,15 +122,22 @@ class FutbolistasModel {
             $order = 'ASC';
         }
 
-        $query = $this->db->prepare("
-            SELECT *
-            FROM futbolista
-            ORDER BY $sort $order
-            LIMIT ? OFFSET ?
-        ");
+        $sql = "SELECT * FROM futbolista";
 
-        $query->bindValue(1, (int) $limit, PDO::PARAM_INT);
-        $query->bindValue(2, (int) $offset, PDO::PARAM_INT);
+        if ($posicion) {
+            $sql .= " WHERE posicion = ?";
+        }
+
+        $sql .= " ORDER BY $sort $order LIMIT ? OFFSET ?";
+
+        $query = $this->db->prepare($sql);
+
+        $bindIndex = 1;
+        if ($posicion) {
+            $query->bindValue($bindIndex++, $posicion, PDO::PARAM_STR);
+        }
+        $query->bindValue($bindIndex++, (int) $limit, PDO::PARAM_INT);
+        $query->bindValue($bindIndex++, (int) $offset, PDO::PARAM_INT);
 
         $query->execute();
 

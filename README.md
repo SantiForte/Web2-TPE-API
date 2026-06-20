@@ -121,4 +121,32 @@ Body
   "posicion": "Extremo",
   "id_club": 1
 }
+------------------------------------------------
+Crear futbolista (POST)
+Endpoint
+POST /futbolistas
+Requiere autenticación JWT
+
+Header:
+Authorization: Bearer <tu_token>
+Content-Type: application/json
+Body
+{
+  "nombre": "Ángel",
+  "apellido": "Di María",
+  "fecha_nacimiento": "1988-02-14",
+  "nacionalidad": "Argentina",
+  "posicion": "Extremo",
+  "id_club": 2
+}
+------------------------------------------------
+Filtrado por posición
+Endpoint
+GET /futbolistas?posicion=delantero
+
+Parámetros
+posicion = El puesto del jugador a filtrar (ej: delantero, extremo, mediocampista)
+
+Ejemplo
+GET /futbolistas?posicion=extremo
 ```
