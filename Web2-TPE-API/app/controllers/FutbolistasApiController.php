@@ -15,22 +15,25 @@ class FutbolistasApiController {
 
     /*GET listado + paginado*/
     public function getFutbolistas($req, $res) {
-    $sort = $req->query->sort ?? 'id_jugador';
-    $order = $req->query->order ?? 'ASC';
+        $sort = $req->query->sort ?? 'id_jugador';
+        $order = $req->query->order ?? 'ASC';
 
-    $page = $req->query->page ?? null;
-    $limit = $req->query->limit ?? null;
+        $page = $req->query->page ?? null;
+        $limit = $req->query->limit ?? null;
 
-    if ($page && $limit) {
-        $offset = ($page - 1) * $limit;
-        $futbolistas = $this->model->getAllPaginated($sort,$order,$limit,$offset);
+        if ($page !== null && $limit !== null) {
+            if (!is_numeric($page) || $page <= 0 || !is_numeric($limit) || $limit <= 0) {
+                return $res->json('Los parametros page y limit deben ser numeros positivos', 400);
+            }
 
-    } else {
-        $futbolistas = $this->model->getAll($sort,$order);
+            $offset = ($page - 1) * $limit;
+            $futbolistas = $this->model->getAllPaginated($sort, $order, $limit, $offset);
+        } else {
+            $futbolistas = $this->model->getAll($sort, $order);
+        }
+
+        return $res->json($futbolistas, 200);
     }
-
-    return $res->json($futbolistas, 200);
-}
 
     function getFutbolistaById($req,$res) {
         $id=$req->params->id;
