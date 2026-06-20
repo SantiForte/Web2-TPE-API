@@ -115,6 +115,13 @@ public function updateFutbolista($req, $res) {
         );
     }
 
+    if ($id_club) {
+        $club = $this->modelClub->get($id_club);
+        if (!$club) {
+            return $res->json("El club no existe", 404);
+        }
+    }
+
     $this->model->update(
         $id,
         $nombre,
