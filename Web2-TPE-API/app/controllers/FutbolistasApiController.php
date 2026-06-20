@@ -50,6 +50,10 @@ class FutbolistasApiController {
     }   
     //POST
     function addFutbolista($req,$res){
+        if (!$req->user) {
+            return $res->json("No autorizado", 401);
+        }
+
         $nombre=$req->body->nombre ?? null;
         $apellido=$req->body->apellido ?? null;
         $posicion=$req->body->posicion ?? null;
